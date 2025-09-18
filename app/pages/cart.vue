@@ -1,19 +1,21 @@
 <script setup lang="ts">
+import { computed } from 'vue'
 import { useCart } from '~/composables/useCart'
+
 const { cart, increaseQty, decreaseQty, removeFromCart, subtotal, clearCart } = useCart()
 const shipping = 120
 const total = computed(() => subtotal.value + shipping)
 </script>
 
 <template>
-  <section>
+  <section class="py-12 max-w-6xl mx-auto">
     <h1 class="text-3xl font-bold mb-6">Your Cart</h1>
 
     <div v-if="cart.length" class="grid md:grid-cols-3 gap-8">
       <div class="md:col-span-2 space-y-4">
         <div v-for="item in cart" :key="item.id" class="flex items-center justify-between bg-white p-4 rounded shadow">
           <div class="flex items-center gap-4">
-            <img :src="item.productImage" alt="" class="w-20 h-20 object-cover rounded" />
+            <img :src="item.productImage" alt="" class="w-20 h-20 object-cover rounded"/>
             <div>
               <div class="font-semibold">{{ item.productName }}</div>
               <div class="text-gray-600">₱{{ item.sellPrice }}</div>
@@ -39,8 +41,8 @@ const total = computed(() => subtotal.value + shipping)
           <div class="flex justify-between font-bold text-lg"><span>Total</span><span>₱{{ total.toFixed(2) }}</span></div>
         </div>
 
-        <NuxtLink to="/checkout" class="block bg-blue-600 text-white text-center px-4 py-3 rounded-lg">Proceed to Checkout</NuxtLink>
-        <button @click="clearCart" class="mt-3 w-full border rounded px-4 py-2">Clear Cart</button>
+        <NuxtLink to="/checkout" class="block bg-blue-600 text-white text-center px-4 py-3 rounded-lg mb-2">Proceed to Checkout</NuxtLink>
+        <button @click="clearCart" class="w-full border rounded px-4 py-2">Clear Cart</button>
       </aside>
     </div>
 
