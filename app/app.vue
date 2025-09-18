@@ -2,6 +2,6 @@
   <div>
     <NuxtRouteAnnouncer />
     <NuxtWelcome />
-    x
+    xxX
   </div>
 </template>
