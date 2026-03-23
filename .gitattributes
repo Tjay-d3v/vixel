@@ -1,2 +1,37 @@
 * text=auto
 * text=auto eol=lf
+
+# Nuxt.js files - should be detected as Nuxt
+nuxt.config.ts linguist-language=Nuxt
+nuxt.config.js linguist-language=Nuxt
+
+# Supabase files - should be detected as SQL/Supabase
+*.sql linguist-language=SQL
+server/utils/supabase.ts linguist-language=Supabase
+server/api/**/*.ts linguist-language=Supabase
+app/composables/useSupabaseClient.ts linguist-language=Supabase
+
+# Stripe files - should be detected as Stripe
+server/api/create-payment-intent.post.ts linguist-language=Stripe
+app/composables/useStripePayment.ts linguist-language=Stripe
+
+# Tailwind CSS files
+tailwind.config.js linguist-language=CSS
+tailwind.config.ts linguist-language=CSS
+app/assets/css/tailwind.css linguist-language=CSS
+
+# Vue.js files (already detected correctly)
+*.vue linguist-language=Vue
+
+# TypeScript files (should be detected as TypeScript, not generic)
+*.ts linguist-language=TypeScript
+*.tsx linguist-language=TypeScript
+
+# JSON files (should be detected as JSON)
+package.json linguist-language=JSON
+package-lock.json linguist-language=JSON
+tsconfig.json linguist-language=JSON
+
+# README and documentation
+README.md linguist-documentation
+SETUP_GUIDE.md linguist-documentation
