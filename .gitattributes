@@ -14,11 +14,24 @@ app/composables/useSupabaseClient.ts linguist-language=Supabase
 # Stripe files - should be detected as Stripe
 server/api/create-payment-intent.post.ts linguist-language=Stripe
 app/composables/useStripePayment.ts linguist-language=Stripe
+*.stripe.ts linguist-language=Stripe
 
 # Tailwind CSS files
 tailwind.config.js linguist-language=CSS
 tailwind.config.ts linguist-language=CSS
 app/assets/css/tailwind.css linguist-language=CSS
+*.tailwind.css linguist-language=CSS
+
+# Nuxt.js specific patterns
+*.nuxt.ts linguist-language=Nuxt
+*.nuxt.js linguist-language=Nuxt
+app.vue linguist-language=Vue
+pages/*.vue linguist-language=Vue
+components/*.vue linguist-language=Vue
+
+# Supabase specific patterns
+*.supabase.ts linguist-language=Supabase
+server/api/*.ts linguist-language=Supabase
 
 # Vue.js files (already detected correctly)
 *.vue linguist-language=Vue
