@@ -1,4 +1,17 @@
-# Nuxt Minimal Starter
+# Vixel - E-commerce Store
+
+A modern e-commerce application built with Nuxt 4, Vue 3, Supabase, and Stripe.
+
+## Technologies
+
+- **Nuxt 4** - Full-stack framework
+- **Vue 3** - Frontend framework  
+- **TypeScript** - Type-safe development
+- **Supabase** - Backend-as-a-Service (PostgreSQL, Auth, Storage)
+- **Stripe** - Payment processing
+- **Tailwind CSS** - Utility-first CSS framework
+
+## Setup
 
 Look at the [Nuxt documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
 
