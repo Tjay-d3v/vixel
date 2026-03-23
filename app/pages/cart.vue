@@ -1,6 +1,11 @@
 <script setup lang="ts">
 import { computed } from 'vue'
+
 import { useCart } from '~/composables/useCart'
+
+definePageMeta({
+  middleware: 'auth',
+})
 
 const { cart, increaseQty, decreaseQty, removeFromCart, subtotal, clearCart } = useCart()
 const shipping = 12

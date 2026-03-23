@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue'
+import { useAuth } from '~/composables/useAuth'
 import { useCart } from '~/composables/useCart'
 
 const props = defineProps<{
@@ -16,6 +17,8 @@ const props = defineProps<{
 
 const emit = defineEmits(['close'])
 const { addToCart } = useCart()
+const { isAuthenticated, requireAuth } = useAuth()
+const route = useRoute()
 
 const qty = ref(1)
 const currentImage = ref(0)
@@ -43,8 +46,23 @@ function decreaseQty() {
   if (qty.value > 1) qty.value--
 }
 
-function handleAddToCart() {
+async function handleAddToCart() {
   const image = props.product.images[currentImage.value] ?? props.product.images[0] ?? ''
+  const allowed = await requireAuth({
+    redirectTo: route.fullPath,
+    pendingCartItem: {
+      id: props.product.id,
+      image,
+      name: props.product.name,
+      price: props.product.price,
+      quantity: qty.value,
+    },
+  })
+
+  if (!allowed) {
+    emit('close')
+    return
+  }
 
   for (let i = 0; i < qty.value; i++) {
     addToCart({
@@ -108,7 +126,7 @@ function handleAddToCart() {
 
             <div class="mt-auto flex gap-4 pt-8">
               <button @click="handleAddToCart" class="btn-primary flex-1">
-                Add to Cart
+                {{ isAuthenticated ? 'Add to Cart' : 'Log In to Add' }}
               </button>
               <button @click="emit('close')" class="btn-secondary flex-1">
                 Continue Shopping

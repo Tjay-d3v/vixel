@@ -1,19 +1,43 @@
 <script setup lang="ts">
 import { useRoute, useRouter } from '#imports'
-import { products } from '~/data/products'
+import { useAuth } from '~/composables/useAuth'
 import { useCart } from '~/composables/useCart'
+import { products } from '~/data/products'
 
 const route = useRoute()
 const router = useRouter()
 const id = Number(route.params.id)
 const product = products.find(p => p.id === id) || null
 const { addToCart } = useCart()
+const { isAuthenticated, requireAuth } = useAuth()
 
-function add() {
-  if (product) {
-    addToCart({ id: product.id, productImage: product.productImage, productName: product.productName, sellPrice: product.sellPrice })
-    router.push('/cart')
+async function add() {
+  if (!product) {
+    return
   }
+
+  const allowed = await requireAuth({
+    redirectTo: route.fullPath,
+    pendingCartItem: {
+      id: product.id,
+      image: product.productImage,
+      name: product.productName,
+      price: product.sellPrice,
+      quantity: 1,
+    },
+  })
+
+  if (!allowed) {
+    return
+  }
+
+  addToCart({
+    id: product.id,
+    image: product.productImage,
+    name: product.productName,
+    price: product.sellPrice,
+  })
+  router.push('/cart')
 }
 </script>
 
@@ -29,7 +53,7 @@ function add() {
           <h1 class="mt-5 text-4xl font-black tracking-tight md:text-5xl">{{ product.productName }}</h1>
           <p class="mt-5 max-w-2xl text-base leading-relaxed text-white/75">{{ product.description }}</p>
           <div class="mt-6 flex flex-wrap gap-3">
-            <button @click="add" class="btn-primary">Add to Cart</button>
+            <button @click="add" class="btn-primary">{{ isAuthenticated ? 'Add to Cart' : 'Log In to Add to Cart' }}</button>
             <NuxtLink to="/products" class="btn-secondary border-white/20 bg-white/10 text-white hover:bg-white/20">Back to products</NuxtLink>
           </div>
         </div>

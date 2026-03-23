@@ -4,6 +4,10 @@ import { onBeforeUnmount, onMounted, ref } from 'vue'
 import { useCart } from '~/composables/useCart'
 import { useStripePayment } from '~/composables/useStripePayment'
 
+definePageMeta({
+  middleware: 'auth',
+})
+
 const { cart, subtotal, clearCart } = useCart()
 const {
   destroy,
