@@ -1,3 +1,56 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  :root {
+    color-scheme: light;
+  }
+
+  body {
+    @apply bg-orange-50 text-slate-900 antialiased;
+    background-image:
+      radial-gradient(circle at top left, rgba(251, 191, 36, 0.2), transparent 26%),
+      radial-gradient(circle at top right, rgba(244, 114, 182, 0.18), transparent 22%),
+      linear-gradient(180deg, #fff8ef 0%, #fff4e8 48%, #fffaf6 100%);
+    background-attachment: fixed;
+  }
+
+  ::selection {
+    @apply bg-orange-200 text-slate-900;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply inline-flex items-center justify-center rounded-full bg-gradient-to-r from-orange-500 via-rose-500 to-amber-500 px-6 py-3 text-sm font-semibold text-white shadow-[0_14px_30px_-14px_rgba(244,114,182,0.8)] transition hover:scale-[1.01] hover:shadow-[0_18px_40px_-16px_rgba(249,115,22,0.8)];
+  }
+
+  .btn-secondary {
+    @apply inline-flex items-center justify-center rounded-full border border-orange-200 bg-white/90 px-6 py-3 text-sm font-semibold text-slate-800 shadow-sm transition hover:border-orange-300 hover:bg-orange-50;
+  }
+
+  .section-title {
+    @apply text-3xl font-black tracking-tight text-slate-950 md:text-4xl;
+  }
+
+  .section-subtitle {
+    @apply mt-4 max-w-2xl text-base leading-relaxed text-slate-600;
+  }
+
+  .surface-card {
+    @apply rounded-[28px] border border-white/70 bg-white/90 shadow-[0_22px_70px_-34px_rgba(15,23,42,0.38)] backdrop-blur;
+  }
+
+  .input-field {
+    @apply w-full rounded-2xl border border-orange-100 bg-white px-4 py-3 text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-orange-400 focus:ring-2 focus:ring-orange-100;
+  }
+
+  .promo-chip {
+    @apply inline-flex items-center gap-2 rounded-full border border-white/70 bg-white/80 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.2em] text-slate-700 shadow-sm;
+  }
+
+  .banner-panel {
+    @apply rounded-[30px] border border-white/70 bg-gradient-to-br from-slate-950 via-slate-900 to-orange-950 text-white shadow-[0_28px_70px_-36px_rgba(15,23,42,0.9)];
+  }
+}

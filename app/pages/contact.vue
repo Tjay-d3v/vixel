@@ -1,66 +1,88 @@
 <template>
-  <div class="space-y-24">
-    <!-- Hero Section -->
-    <section class="text-center py-20 bg-gradient-to-r from-green-50 to-emerald-50 rounded-2xl">
-      <h1 class="text-4xl md:text-5xl font-extrabold text-gray-800 mb-4">
-        Get in <span class="text-green-600">Touch</span>
-      </h1>
-      <p class="text-lg text-gray-600 max-w-2xl mx-auto">
-        Have questions, feedback, or need support?  
-        We’re here to help you every step of the way.
-      </p>
-    </section>
-
-    <!-- Contact Form -->
-    <section class="container mx-auto px-4 md:px-0">
-      <div class="grid md:grid-cols-2 gap-12 items-start">
-        <!-- Form -->
-        <form class="bg-white p-8 rounded-2xl shadow space-y-6">
-          <h2 class="text-2xl font-bold mb-4">Send us a message</h2>
-          <input
-            type="text"
-            placeholder="Your Name"
-            class="w-full border p-3 rounded"
-          />
-          <input
-            type="email"
-            placeholder="Your Email"
-            class="w-full border p-3 rounded"
-          />
-          <textarea
-            rows="5"
-            placeholder="Your Message"
-            class="w-full border p-3 rounded"
-          ></textarea>
-          <button
-            type="submit"
-            class="w-full bg-green-600 text-white py-3 rounded-lg shadow hover:bg-green-700 transition"
-          >
-            Send Message
-          </button>
-        </form>
-
-        <!-- Contact Info -->
-        <div class="space-y-8">
-          <h2 class="text-2xl font-bold mb-4">Contact Information</h2>
-          <div class="space-y-4 text-gray-700">
-            <p>📍 <strong>Address:</strong> 123 Example Street, Springfield, USA</p>
-            <p>📧 <strong>Email:</strong> support@vixelstore.com</p>
-            <p>📞 <strong>Phone:</strong> +1 (555) 123-4567</p>
+  <div class="space-y-16">
+    <section class="banner-panel overflow-hidden px-8 py-12 md:px-12 md:py-16">
+      <div class="grid gap-10 md:grid-cols-[1.1fr_0.9fr] md:items-center">
+        <div>
+          <div class="flex flex-wrap gap-2">
+            <span class="promo-chip border-white/20 bg-white/10 text-white">Ad booking</span>
+            <span class="promo-chip border-white/20 bg-white/10 text-white">Banner planning</span>
+            <span class="promo-chip border-white/20 bg-white/10 text-white">Promo concepting</span>
           </div>
+          <p class="mt-6 text-xs font-semibold uppercase tracking-[0.24em] text-orange-200">Contact</p>
+          <h1 class="mt-4 text-4xl font-black tracking-tight md:text-5xl">
+            Want a storefront that feels louder, warmer, and more fun to shop?
+          </h1>
+          <p class="mt-5 max-w-2xl text-base leading-relaxed text-white/75">
+            Reach out if you want product banners, event blocks, launch-week layouts, or more ad-style energy across the storefront.
+          </p>
+        </div>
 
-          <!-- Map Placeholder -->
-          <div class="rounded-2xl overflow-hidden shadow-lg">
-            <iframe
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3153.019504590926!2d-122.41941548468115!3d37.77492977975951!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8085809c2b8!2s123%20Example%20St%2C%20San%20Francisco%2C%20CA%2094103%2C%20USA!5e0!3m2!1sen!2sus!4v1690000000000"
-              width="100%"
-              height="300"
-              style="border:0;"
-              allowfullscreen=""
-              loading="lazy"
-            ></iframe>
+        <div class="grid gap-4">
+          <article class="rounded-[28px] border border-white/10 bg-white/10 p-5">
+            <p class="text-xs font-semibold uppercase tracking-[0.22em] text-orange-200">Current promo focus</p>
+            <p class="mt-3 text-2xl font-black">Weekend launch banners + creator event blocks</p>
+          </article>
+          <div class="grid gap-4 sm:grid-cols-2">
+            <article class="rounded-[24px] border border-white/10 bg-white/10 p-5">
+              <p class="text-xs uppercase tracking-[0.22em] text-orange-200">Offer type</p>
+              <p class="mt-2 text-lg font-bold">Sales, product drops, limited bundles</p>
+            </article>
+            <article class="rounded-[24px] border border-white/10 bg-white/10 p-5">
+              <p class="text-xs uppercase tracking-[0.22em] text-orange-200">Response time</p>
+              <p class="mt-2 text-lg font-bold">Usually within one business day</p>
+            </article>
           </div>
         </div>
+      </div>
+    </section>
+
+    <section class="grid gap-8 md:grid-cols-[1.05fr_0.95fr]">
+      <form class="surface-card space-y-5 p-8">
+        <div>
+          <p class="text-xs font-semibold uppercase tracking-[0.22em] text-orange-500">Tell us what you want to promote</p>
+          <h2 class="mt-3 text-3xl font-black text-slate-950">Plan the next banner push</h2>
+        </div>
+
+        <div class="grid gap-4 sm:grid-cols-2">
+          <input type="text" placeholder="Your Name" class="input-field" />
+          <input type="email" placeholder="Your Email" class="input-field" />
+        </div>
+
+        <input type="text" placeholder="Campaign goal or event name" class="input-field" />
+        <textarea rows="7" placeholder="Describe the sale, event, or products you want to spotlight." class="input-field"></textarea>
+
+        <div class="flex flex-wrap gap-3">
+          <button type="submit" class="btn-primary">Send Message</button>
+          <NuxtLink to="/products" class="btn-secondary">See Product Banners</NuxtLink>
+        </div>
+      </form>
+
+      <div class="space-y-6">
+        <article class="surface-card p-7">
+          <h2 class="text-xl font-black text-slate-950">Promo services</h2>
+          <dl class="mt-5 space-y-4 text-sm text-slate-600">
+            <div>
+              <dt class="font-semibold text-slate-900">Hero banners</dt>
+              <dd class="mt-1">Campaign intros, sale headlines, creator picks, and seasonal launches.</dd>
+            </div>
+            <div>
+              <dt class="font-semibold text-slate-900">Event blocks</dt>
+              <dd class="mt-1">Livestream callouts, weekend drops, limited bundles, and timed offers.</dd>
+            </div>
+            <div>
+              <dt class="font-semibold text-slate-900">Store refresh</dt>
+              <dd class="mt-1">Warmer visuals, more ad energy, and stronger commercial pacing across the site.</dd>
+            </div>
+          </dl>
+        </article>
+
+        <article class="surface-card p-7">
+          <p class="text-xs font-semibold uppercase tracking-[0.22em] text-orange-500">Quick contact</p>
+          <h2 class="mt-3 text-2xl font-black text-slate-950">support@vixelstore.com</h2>
+          <p class="mt-3 text-sm leading-relaxed text-slate-600">
+            Reach out if you want to turn product sections into a more active campaign experience.
+          </p>
+        </article>
       </div>
     </section>
   </div>

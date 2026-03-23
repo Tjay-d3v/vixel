@@ -1,34 +1,37 @@
 <template>
-  <section class="mt-20 relative bg-gradient-to-r from-indigo-600 to-blue-600 text-white py-16 rounded-2xl overflow-hidden">
-    <div class="max-w-4xl mx-auto text-center relative z-10 px-6">
-      <h2 class="text-3xl md:text-4xl font-extrabold mb-4">
-        Don’t Miss Out on Exclusive Deals 🚀
-      </h2>
-      <p class="text-lg text-indigo-100 mb-8">
-        Join our community and be the first to know about discounts, new arrivals, and special offers.
-      </p>
+  <section class="banner-panel overflow-hidden px-6 py-14 md:px-12">
+    <div class="grid gap-10 md:grid-cols-[1.1fr_0.9fr] md:items-center">
+      <div>
+        <p class="text-xs font-semibold uppercase tracking-[0.26em] text-orange-200">Event-ready storefronts</p>
+        <h2 class="mt-4 max-w-2xl text-3xl font-black tracking-tight md:text-4xl">
+          Turn a regular catalog into a campaign with launch banners, sales cards, and conversion-first storytelling.
+        </h2>
+        <p class="mt-5 max-w-2xl text-base leading-relaxed text-white/75">
+          The refreshed Vixel direction leans into advertising energy: bright calls to action, promo clusters, creator moments, and shoppable event sections.
+        </p>
 
-      <!-- CTA Buttons -->
-      <div class="flex flex-col sm:flex-row gap-4 justify-center">
-        <NuxtLink
-          to="/signup"
-          class="bg-white text-indigo-700 font-semibold px-8 py-3 rounded-lg shadow hover:bg-gray-100 transition"
-        >
-          Sign Up Free
-        </NuxtLink>
-        <NuxtLink
-          to="/products"
-          class="bg-indigo-800 text-white font-semibold px-8 py-3 rounded-lg shadow hover:bg-indigo-900 transition"
-        >
-          Start Shopping
-        </NuxtLink>
+        <div class="mt-8 flex flex-col gap-3 sm:flex-row">
+          <NuxtLink to="/signup" class="btn-primary">Create an Account</NuxtLink>
+          <NuxtLink to="/products" class="btn-secondary border-white/20 bg-white/10 text-white hover:bg-white/20">
+            Explore Products
+          </NuxtLink>
+        </div>
       </div>
-    </div>
 
-    <!-- Background Shapes -->
-    <div class="absolute inset-0 opacity-20">
-      <div class="w-80 h-80 bg-white rounded-full blur-3xl absolute -top-20 left-10"></div>
-      <div class="w-96 h-96 bg-yellow-300 rounded-full blur-3xl absolute bottom-0 right-0"></div>
+      <div class="grid gap-3 text-sm">
+        <article class="rounded-[26px] border border-white/15 bg-white/10 p-5">
+          <p class="text-xs font-semibold uppercase tracking-[0.24em] text-orange-200">Launch Week</p>
+          <p class="mt-2 text-2xl font-black">35% off spotlight accessories</p>
+        </article>
+        <article class="rounded-[26px] border border-white/15 bg-white/10 p-5">
+          <p class="text-xs font-semibold uppercase tracking-[0.24em] text-orange-200">Creator Event</p>
+          <p class="mt-2 text-lg font-bold">Friday livestream picks with bonus bundle discounts.</p>
+        </article>
+        <article class="rounded-[26px] border border-white/15 bg-white/10 p-5">
+          <p class="text-xs font-semibold uppercase tracking-[0.24em] text-orange-200">Store Promo Slots</p>
+          <p class="mt-2 text-lg font-bold">Hero banner, urgency strip, mini ad tower, and featured deal row.</p>
+        </article>
+      </div>
     </div>
   </section>
 </template>

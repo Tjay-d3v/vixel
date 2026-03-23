@@ -2,7 +2,6 @@
 import { ref, watch } from 'vue'
 import { useCart } from '~/composables/useCart'
 
-// Props
 const props = defineProps<{
   show: boolean
   product: {
@@ -11,19 +10,16 @@ const props = defineProps<{
     price: number
     description: string
     images: string[]
+    qty: number
   }
 }>()
 
 const emit = defineEmits(['close'])
-
-// Cart composable
 const { addToCart } = useCart()
 
-// Reactive state
 const qty = ref(1)
 const currentImage = ref(0)
 
-// Reset qty and carousel when modal opens
 watch(() => props.show, (val) => {
   if (val) {
     qty.value = 1
@@ -31,78 +27,93 @@ watch(() => props.show, (val) => {
   }
 })
 
-// Carousel
 function prevImage() {
   currentImage.value = currentImage.value > 0 ? currentImage.value - 1 : props.product.images.length - 1
 }
+
 function nextImage() {
   currentImage.value = currentImage.value < props.product.images.length - 1 ? currentImage.value + 1 : 0
 }
 
-// Quantity
-function increaseQty() { qty.value++ }
-function decreaseQty() { if (qty.value > 1) qty.value-- }
+function increaseQty() {
+  qty.value++
+}
 
-// Add to cart
+function decreaseQty() {
+  if (qty.value > 1) qty.value--
+}
+
 function handleAddToCart() {
-  addToCart({ ...props.product, qty: qty.value })
+  const image = props.product.images[currentImage.value] ?? props.product.images[0] ?? ''
+
+  for (let i = 0; i < qty.value; i++) {
+    addToCart({
+      id: props.product.id,
+      image,
+      name: props.product.name,
+      price: props.product.price,
+    })
+  }
+
   emit('close')
 }
 </script>
 
 <template>
   <transition name="fade">
-    <div v-if="show" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 px-4">
-      <div class="bg-white rounded-3xl shadow-2xl max-w-3xl w-full overflow-hidden relative">
-        <!-- Close button -->
-        <button @click="emit('close')" class="absolute top-4 right-4 text-gray-500 hover:text-gray-800 text-3xl font-bold">&times;</button>
+    <div v-if="show" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/60 px-4 backdrop-blur-sm">
+      <div class="relative w-full max-w-4xl overflow-hidden rounded-[32px] border border-white/60 bg-white shadow-[0_35px_90px_-45px_rgba(15,23,42,0.9)]">
+        <button @click="emit('close')" class="absolute right-5 top-4 z-10 text-3xl font-bold text-slate-400 transition hover:text-slate-800">&times;</button>
 
         <div class="md:flex">
-          <!-- Carousel -->
-          <div class="md:w-1/2 bg-gray-50 flex items-center justify-center relative p-4">
-            <img :src="props.product.images[currentImage]" alt="" class="w-full h-96 object-cover rounded-xl"/>
-            <button @click="prevImage" class="absolute left-2 top-1/2 -translate-y-1/2 bg-white rounded-full shadow p-2 hover:bg-gray-100">&lt;</button>
-            <button @click="nextImage" class="absolute right-2 top-1/2 -translate-y-1/2 bg-white rounded-full shadow p-2 hover:bg-gray-100">&gt;</button>
+          <div class="relative md:w-1/2">
+            <div class="absolute left-4 top-4 z-10 flex flex-wrap gap-2">
+              <span class="promo-chip border-white/20 bg-white/20 text-white">Flash pick</span>
+              <span class="promo-chip border-white/20 bg-white/20 text-white">Event bundle</span>
+            </div>
+            <div class="bg-gradient-to-br from-orange-100 via-white to-rose-100 p-4">
+              <img :src="props.product.images[currentImage]" alt="" class="h-96 w-full rounded-[26px] object-cover" />
+              <button @click="prevImage" class="absolute left-6 top-1/2 -translate-y-1/2 rounded-full bg-white/90 p-3 shadow hover:bg-white">&lt;</button>
+              <button @click="nextImage" class="absolute right-6 top-1/2 -translate-y-1/2 rounded-full bg-white/90 p-3 shadow hover:bg-white">&gt;</button>
+            </div>
           </div>
 
-          <!-- Product Info -->
-          <div class="md:w-1/2 p-6 flex flex-col">
-            <h2 class="text-2xl font-bold mb-2">{{ props.product.name }}</h2>
-            <p class="text-gray-600 mb-4">{{ props.product.description }}</p>
-            <p class="text-indigo-600 font-bold text-xl mb-4">₱{{ (props.product.price * qty).toFixed(2) }}</p>
+          <div class="flex flex-col p-6 md:w-1/2 md:p-8">
+            <p class="text-xs font-semibold uppercase tracking-[0.22em] text-orange-500">Campaign product</p>
+            <h2 class="mt-2 text-3xl font-black text-slate-950">{{ props.product.name }}</h2>
+            <p class="mt-3 text-sm leading-relaxed text-slate-600">{{ props.product.description }}</p>
+            <p class="mt-5 text-2xl font-black text-rose-500">${{ (props.product.price * qty).toFixed(2) }}</p>
 
-            <!-- Quantity selector -->
-            <div class="flex items-center gap-2 mb-4">
-              <button @click="decreaseQty" class="px-3 py-1 border rounded hover:bg-gray-100">-</button>
-              <span class="px-4 py-1 border rounded">{{ qty }}</span>
-              <button @click="increaseQty" class="px-3 py-1 border rounded hover:bg-gray-100">+</button>
+            <div class="mt-5 rounded-[24px] bg-orange-50 p-4 text-sm text-slate-700">
+              <p class="font-semibold text-slate-900">Bundle hook</p>
+              <p class="mt-2">Add this item now and pair it with a creator favorite to build a higher-value cart.</p>
             </div>
 
+            <div class="mt-5 flex items-center gap-2">
+              <button @click="decreaseQty" class="rounded-full border border-orange-200 px-4 py-2 font-semibold hover:bg-orange-50">-</button>
+              <span class="rounded-full border border-orange-100 px-5 py-2 font-semibold">{{ qty }}</span>
+              <button @click="increaseQty" class="rounded-full border border-orange-200 px-4 py-2 font-semibold hover:bg-orange-50">+</button>
+            </div>
 
-
-            <!-- Carousel Thumbnails -->
-            <div class="flex gap-2 mt-4 overflow-x-auto">
+            <div class="mt-5 flex gap-2 overflow-x-auto">
               <img
                 v-for="(img, index) in props.product.images"
                 :key="index"
                 :src="img"
-                :class="{'border-2 border-indigo-600': index === currentImage}"
-                class="w-16 h-16 object-cover rounded cursor-pointer"
+                :class="{ 'border-2 border-orange-500': index === currentImage }"
+                class="h-16 w-16 cursor-pointer rounded-2xl object-cover"
                 @click="currentImage = index"
               />
             </div>
 
-
-            <!-- Buttons -->
-            <div class="flex gap-4 mt-auto">
-              <button @click="handleAddToCart" class="flex-1 bg-indigo-600 text-white py-3 rounded-lg font-semibold hover:bg-indigo-700 transition">
+            <div class="mt-auto flex gap-4 pt-8">
+              <button @click="handleAddToCart" class="btn-primary flex-1">
                 Add to Cart
               </button>
-              <button @click="emit('close')" class="flex-1 border rounded-lg py-3 font-semibold hover:bg-gray-100 transition">
+              <button @click="emit('close')" class="btn-secondary flex-1">
                 Continue Shopping
               </button>
             </div>
-            
           </div>
         </div>
       </div>
