@@ -3,13 +3,14 @@ import { computed, onMounted, onUnmounted, ref } from 'vue'
 import { useAuth } from '~/composables/useAuth'
 import { useCart } from '~/composables/useCart'
 
-const { cart } = useCart()
+const { cart, totalQuantity } = useCart()
 const { fetchUser, isAuthenticated, signOut, user } = useAuth()
-const cartCount = computed(() => cart.value.reduce((sum, item) => sum + item.qty, 0))
+const cartCount = computed(() => totalQuantity.value)
 
 const isOpen = ref(false)
 const isScrolled = ref(false)
 const isLoggingOut = ref(false)
+const userMenuOpen = ref(false)
 
 const handleScroll = () => {
   isScrolled.value = window.scrollY > 14
@@ -24,6 +25,7 @@ onUnmounted(() => window.removeEventListener('scroll', handleScroll))
 
 async function handleLogout() {
   isLoggingOut.value = true
+  userMenuOpen.value = false
 
   try {
     await signOut()
@@ -101,37 +103,77 @@ async function handleLogout() {
             class="relative rounded-full px-4 py-2 text-sm font-semibold text-slate-600 transition hover:bg-orange-50 hover:text-slate-900"
             active-class="bg-orange-100 text-slate-950"
           >
-            Cart
-            <span
-              v-if="cartCount > 0"
-              class="absolute -right-1 -top-1 inline-flex min-w-5 items-center justify-center rounded-full bg-gradient-to-r from-orange-500 to-rose-500 px-1.5 py-0.5 text-[11px] font-semibold text-white"
-            >
-              {{ cartCount }}
+            <span class="inline-flex items-center gap-2">
+              🛒 Cart
+              <span
+                v-if="cartCount > 0"
+                class="inline-flex min-w-5 items-center justify-center rounded-full bg-gradient-to-r from-orange-500 to-rose-500 px-1.5 py-0.5 text-[11px] font-semibold text-white"
+              >
+                {{ cartCount }}
+              </span>
             </span>
           </NuxtLink>
 
-          <div class="ml-2 hidden items-center gap-2 xl:flex">
-            <span class="promo-chip">48h launch sprint</span>
-            <span class="promo-chip">Sale-ready storefronts</span>
-          </div>
+          <!-- Auth / User Section -->
+          <div class="ml-4 flex items-center gap-3">
+            <!-- Logged In: User Menu -->
+            <div v-if="isAuthenticated && user" class="flex items-center gap-3">
+              <!-- User Display -->
+              <div class="hidden items-center gap-2 lg:flex">
+                <div class="text-right">
+                  <p class="text-sm font-semibold text-slate-900">
+                    {{ user.user_metadata?.full_name || user.email?.split('@')[0] || 'User' }}
+                  </p>
+                  <p class="text-xs text-slate-500">{{ user.email }}</p>
+                </div>
+              </div>
 
-          <div v-if="isAuthenticated && user" class="ml-2 hidden items-center gap-3 xl:flex">
-            <div class="rounded-full border border-orange-100 bg-orange-50 px-4 py-2 text-sm font-semibold text-slate-800">
-              {{ user.name }}
+              <!-- User Dropdown -->
+              <div class="relative">
+                <button
+                  class="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-orange-500 to-rose-500 text-sm font-black text-white transition hover:shadow-lg"
+                  :class="{ 'ring-2 ring-orange-300': userMenuOpen }"
+                  @click="userMenuOpen = !userMenuOpen"
+                  @blur="userMenuOpen = false"
+                >
+                  {{ (user.email?.[0] || 'U').toUpperCase() }}
+                </button>
+
+                <!-- Dropdown Menu -->
+                <Transition name="dropdown">
+                  <div
+                    v-if="userMenuOpen"
+                    class="absolute right-0 mt-2 w-48 rounded-xl border border-slate-200 bg-white shadow-lg"
+                  >
+                    <NuxtLink
+                      to="/profile"
+                      class="block border-b border-slate-100 px-4 py-3 text-sm font-semibold text-slate-900 transition hover:bg-orange-50"
+                      @click="userMenuOpen = false"
+                    >
+                      👤 Profile Settings
+                    </NuxtLink>
+                    <button
+                      class="w-full px-4 py-3 text-left text-sm font-semibold text-red-600 transition hover:bg-red-50"
+                      :disabled="isLoggingOut"
+                      @click="handleLogout"
+                    >
+                      {{ isLoggingOut ? 'Signing Out...' : '🚪 Logout' }}
+                    </button>
+                  </div>
+                </Transition>
+              </div>
             </div>
-            <button class="btn-secondary px-5 py-2.5" :disabled="isLoggingOut" @click="handleLogout">
-              {{ isLoggingOut ? 'Signing Out...' : 'Log Out' }}
-            </button>
-          </div>
 
-          <template v-else>
-            <NuxtLink to="/login" class="btn-secondary ml-2 px-5 py-2.5">
-              Log In
-            </NuxtLink>
-            <NuxtLink to="/register" class="btn-primary px-5 py-2.5">
-              Create Account
-            </NuxtLink>
-          </template>
+            <!-- Logged Out: Auth Buttons -->
+            <template v-else>
+              <NuxtLink to="/login" class="btn-secondary px-4 py-2">
+                Log In
+              </NuxtLink>
+              <NuxtLink to="/register" class="btn-primary px-4 py-2">
+                Sign Up
+              </NuxtLink>
+            </template>
+          </div>
         </div>
 
         <button
@@ -186,11 +228,18 @@ async function handleLogout() {
 
         <div v-if="isAuthenticated && user" class="rounded-3xl border border-orange-100 bg-orange-50 px-4 py-4">
           <p class="text-xs font-semibold uppercase tracking-[0.24em] text-slate-500">Signed in</p>
-          <p class="mt-2 text-base font-black text-slate-950">{{ user.name }}</p>
+          <p class="mt-2 text-base font-black text-slate-950">
+            {{ user.user_metadata?.full_name || user.email?.split('@')[0] || 'User' }}
+          </p>
           <p class="mt-1 text-sm text-slate-600">{{ user.email }}</p>
-          <button class="btn-secondary mt-4 w-full" :disabled="isLoggingOut" @click="handleLogout">
-            {{ isLoggingOut ? 'Signing Out...' : 'Log Out' }}
-          </button>
+          <div class="mt-4 grid gap-2">
+            <NuxtLink to="/profile" class="btn-secondary" @click="isOpen = false">
+              Profile Settings
+            </NuxtLink>
+            <button class="btn-danger w-full" :disabled="isLoggingOut" @click="handleLogout">
+              {{ isLoggingOut ? 'Signing Out...' : 'Log Out' }}
+            </button>
+          </div>
         </div>
         <div v-else class="grid gap-2">
           <NuxtLink to="/login" class="btn-secondary w-full" @click="isOpen = false">
@@ -218,3 +267,20 @@ async function handleLogout() {
     </nav>
   </header>
 </template>
+
+<style scoped>
+.dropdown-enter-active,
+.dropdown-leave-active {
+  transition: all 0.2s ease;
+}
+
+.dropdown-enter-from {
+  opacity: 0;
+  transform: translateY(-10px);
+}
+
+.dropdown-leave-to {
+  opacity: 0;
+  transform: translateY(-10px);
+}
+</style>

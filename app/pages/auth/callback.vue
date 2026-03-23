@@ -3,6 +3,7 @@ const route = useRoute()
 const router = useRouter()
 const supabase = useSupabaseClient()
 const { fetchUser, getRedirectTarget, clearRedirectTarget } = useAuth()
+const { mergeLocalCart } = useCart()
 
 const errorMessage = ref('')
 const isLoading = ref(true)
@@ -41,6 +42,9 @@ onMounted(async () => {
     }
 
     await fetchUser(true)
+
+    // Merge local cart into Supabase cart
+    await mergeLocalCart()
 
     const redirectTarget = getRedirectTarget()
     clearRedirectTarget()
